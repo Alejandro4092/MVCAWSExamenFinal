@@ -17,10 +17,10 @@
             var url = $"{baseUrl}/preguntar";
 
             var content = new StringContent(
-                System.Text.Json.JsonSerializer.Serialize(question),
-                System.Text.Encoding.UTF8,
-                "application/json"
-            );
+            System.Text.Json.JsonSerializer.Serialize(new { Pregunta = question }),
+            System.Text.Encoding.UTF8,
+            "application/json"
+        );
 
             var response = await _http.PostAsync(url, content);
             return await response.Content.ReadAsStringAsync();
