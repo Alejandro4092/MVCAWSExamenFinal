@@ -14,10 +14,16 @@
         public async Task<string> AskAsync(string question)
         {
             var baseUrl = _config["AWS:LambdaUrl"];
+            var url = $"{baseUrl}/preguntar";
 
-            var url = $"{baseUrl}/ai?q={Uri.EscapeDataString(question)}";
+            var content = new StringContent(
+                System.Text.Json.JsonSerializer.Serialize(question),
+                System.Text.Encoding.UTF8,
+                "application/json"
+            );
 
-            return await _http.GetStringAsync(url);
+            var response = await _http.PostAsync(url, content);
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }
